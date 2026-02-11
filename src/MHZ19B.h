@@ -2,22 +2,21 @@
 #define MHZ19B_h
 
 #include <Arduino.h>
-#include <SoftwareSerial.h>
 
 class MHZ19B {
   public:
-    MHZ19B(HardwareSerial *Serial);
-    MHZ19B(SoftwareSerial *Serial);
+    MHZ19B(Stream &serial);
 
-    void begin();
-    void autoCalibration(bool off);
+    void autoCalibration(bool on);
     int spanCalibration(int span);
     void zeroCalibration();
     int setRange(int range);
-    uint16_t readCO2();
+    int readCO2();
 
   private:
-    Stream *_Serial;
+    Stream *_serial;
+    byte _response[9];
+    byte _checksum(const byte *data);
 };
 
 #endif
